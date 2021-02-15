@@ -1,0 +1,9 @@
+#!/bin/bash
+
+case "$0" in
+	(/*) scriptdir="$(dirname "$0")";;
+	(*)  scriptdir="$(pwd)/$(dirname "$0")";;
+esac
+
+. "${scriptdir}/lib/conv.lib.sh"
+conv "$@"
