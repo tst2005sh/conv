@@ -6,4 +6,39 @@ case "$0" in
 esac
 
 . "${scriptdir}/lib/conv.lib.sh"
+#. "$scriptdir/deps/jq-mods/jqf.lib.sh"
+
+use_jq_stack() {
+	d=$scriptdir/deps/jq-helpers/lib
+
+	. "$d/jq_stack.lib.sh"
+	. "$d/jq_stack_modcall.lib.sh"
+	. "$d/jq_stack_modload.lib.sh"
+	. "$d/jq_stack_oneline.lib.sh"
+
+	jqf() {
+		jq_stack modcall "$@"
+	}
+}
+
+while [ $# -gt 2 ]; do
+	case "$1" in
+	('-s') shift;set -- --use jq_stack "$@" ;;
+	esac
+	case "$1" in
+	('--use') shift
+		if [ $# -gt 2 ]; then
+			"use_$1"
+		else
+			echo >&2 "ERROR: --use missing argument"
+			exit 1
+		fi
+	;;
+	('--') shift; break ;;
+	('-*') echo >&2 "ERROR: invalid option"; exit 1 ;;
+	(*) break
+	esac
+	shift
+done
+
 conv "$@"
