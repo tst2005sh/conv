@@ -48,7 +48,7 @@ jq_function_ifempty='
 	;'
 
 rgrepn_to_json_object() {
-	jq -Rn '
+	jq -R '
 	'"$jq_function_removeprefix"'
 	'"$jq_function_skipfirst"'
 	'"$jq_function_split_skipfirst"'
