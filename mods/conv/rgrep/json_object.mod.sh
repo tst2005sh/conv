@@ -24,7 +24,7 @@ rgrep_to_json_object() {
 	'"$jq_function_removeprefix"'
 	'"$jq_function_skipfirst"'
 	'"$jq_function_split_skipfirst"'
-	[inputs] |
+	[.,inputs] |
 	map(
 		removeprefix |
 		{

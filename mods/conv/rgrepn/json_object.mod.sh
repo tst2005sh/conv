@@ -55,7 +55,7 @@ rgrepn_to_json_object() {
 	'"$jq_function_trytonumber"'
 	'"$jq_function_ifempty"'
 	'"$jq_function_maybe"'
-	[inputs] |
+	[.,inputs] |
 	map(
 		removeprefix |
 		{
