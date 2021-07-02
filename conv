@@ -6,12 +6,12 @@ case "$0" in
 esac
 
 use_jq_stack() {
-	d=$scriptdir/deps/jq-helpers/lib
+	JQ_STACK_MODDIR="$scriptdir/deps/jq-mods/lib"
 
-	. "$d/jq_stack.lib.sh"
-	. "$d/jq_stack_modcall.lib.sh"
-	. "$d/jq_stack_modload.lib.sh"
-	. "$d/jq_stack_oneline.lib.sh"
+	. "$scriptdir/deps/jq-helpers/lib/jq_stack.lib.sh"
+	. "$scriptdir/deps/jq-helpers/lib/jq_stack_modcall.lib.sh"
+	. "$scriptdir/deps/jq-helpers/lib/jq_stack_modload.lib.sh"
+	. "$scriptdir/deps/jq-helpers/lib/jq_stack_oneline.lib.sh"
 
 	#. "$scriptdir/deps/jq-mods/jqf.lib.sh"
 
@@ -26,7 +26,7 @@ while [ $# -gt 0 ]; do
 	esac
 	case "$1" in
 	('--use') shift
-		if [ $# -gt 2 ]; then
+		if [ $# -gt 1 ]; then
 			"use_$1"
 		else
 			echo >&2 "ERROR: --use missing argument"
@@ -54,6 +54,12 @@ fi
 
 _conv() {
 	while [ $# -gt 0 ]; do
+		case "$1" in
+		(rgrepn/json_dfv)  shift;set -- "rgrepn/json_dfnl/json_dfv" "$@" ;;
+		(rgrepn/json_ff)   shift;set -- "rgrepn/json_dfnl/json_dfv/json_ff" "$@" ;;
+		(rgrepn/flatfiles) shift;set -- "rgrepn/json_dfnl/json_dfv/json_ff/flatfiles" "$@" ;;
+		(rgrepn/tsv) ;;
+		esac
 		case "$1" in
 		(*/*/*)
 			local a="${1%%/*}"
