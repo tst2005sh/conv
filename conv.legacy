@@ -41,47 +41,4 @@ while [ $# -gt 2 ]; do
 	shift
 done
 
-# override the conv.lib.sh content
-conv() {
-	while [ $# -gt 0 ]; do
-		case "$1" in
-		(*/*/*)
-			local a="${1%%/*}"
-			local bc_="${1#*/}"
-			local b="${bc_%%/*}"
-			shift;
-			set -- "${a}/${b}" "${bc_}" "$@"
-			conv "$@"
-			return $?
-		;;
-		(*/*)
-			local a="${1%%/*}"
-			local b="${1#*/}"
-			echo "a=$a"
-			echo "b=$b"
-			shift
-			(
-				RequireMod "conv/${a}/${b}"
-				local name="${a}_to_${b}"
-				"$name" "$@"
-				echo "conv/${a}/${b}"
-			) | (
-				if [ $# -eq 0 ]; then
-					set -- -
-				fi
-				cat
-				conv "$@"
-			)
-			return $?
-		;;
-		(-)	cat; exit 0
-		esac
-		shift
-	done
-	if [ $# -lt 1 ]; then
-		echo >&2 "Usage: conv [<options>] <fmt1>/<fmt2>[/<fmt3>[/...]] [args...]"
-		return 1
-	fi
-}
-
 conv "$@"
