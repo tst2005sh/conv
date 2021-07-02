@@ -57,19 +57,15 @@ conv() {
 		(*/*)
 			local a="${1%%/*}"
 			local b="${1#*/}"
-			echo "a=$a"
-			echo "b=$b"
 			shift
 			(
 				RequireMod "conv/${a}/${b}"
 				local name="${a}_to_${b}"
 				"$name" "$@"
-				echo "conv/${a}/${b}"
 			) | (
 				if [ $# -eq 0 ]; then
 					set -- -
 				fi
-				cat
 				conv "$@"
 			)
 			return $?
