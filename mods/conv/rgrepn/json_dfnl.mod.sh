@@ -1,20 +1,20 @@
 
-# - remove the './' prefix
-# - split('/') limit 1 : dir / rest (subpath/file:value)
-# - split(':') limit 1 : subpath/file : value
-# - pathtofile = dir + subpath/file
-# - pathdir = pathtofile:split( last / )
+# path:n:value ; path = dir[/dirN]/file
+# - do not remove stuff
+# - dirname/filename splitted at the first ':'
+# - dirname is all path except the last one
+# - filename is the last value splited by /
 
-#jq_function_split1='def split1($sep): [.|split($sep)|(first,(skipfirst|join($sep)))];'
-#jq_function_splitn='def splitn($sep;$n): [.|split($sep)|(.[0:$n],(.[$n:]|join($sep)))];'
+#jq_function_split1='def split1($sep): [split($sep)|(first,(skipfirst|join($sep)))];'
+#jq_function_splitn='def splitn($sep;$n): [split($sep)|(.[0:$n],(.[$n:]|join($sep)))];'
+
+. "$scriptdir/deps/jq-mods/lib/dirname_filename.jq.lib.sh"
 
 # RGREP
-# id '/' key ':' value
-# ([^/]+) '/' ([^:]+) ':' (.*)
+# [.../dir/]dir '/' file ':' value
 
 # RGREPN
-# id '/' key ':' number ':' line
-# ([^/]+) '/' ([^:]+) ':' ([^:]+) ':' (.*)
+# [.../dir/]dir '/' file-key ':' number ':' line
 
 jq_function_removeprefix='
 	def removeprefix:
@@ -31,10 +31,10 @@ jq_function_split_skipfirst='
 		(split($sep)|skipfirst|join($sep))
 	;'
 
-jq_function_trytonumber='
-	def trytonumber:
-		if (try (.|tonumber) catch false) then (.|tonumber) else (.) end
-	;'
+#jq_function_trytonumber='
+#	def trytonumber:
+#		if (try (.|tonumber) catch false) then (.|tonumber) else (.) end
+#	;'
 
 #jq_function_maybe='def maybe(f): if (try (f) catch false) then (f) else (.) end;'
 jq_function_maybe='
@@ -52,17 +52,24 @@ rgrepn_to_json_dfnl() {
 	'"$jq_function_removeprefix"'
 	'"$jq_function_skipfirst"'
 	'"$jq_function_split_skipfirst"'
-	'"$jq_function_trytonumber"'
 	'"$jq_function_ifempty"'
 	'"$jq_function_maybe"'
+	'"$jq_function_dirname_filename"'
 	[.,inputs] |
 	map(
-		removeprefix |
+		split(":")
+		| (first|dirname_filename) as $df
+		| (.[1]|ifempty("1")|maybe(tonumber)) as $n
+		| (.[2:]|join(":")) as $line
+		| ($df|first) as $dir
+		| ($df|last) as $file|
 		{
-			"dir":  (split("/")|first),
-			"file": (split_skipfirst("/")|split(":")|first),
-			"n":    (split_skipfirst("/")|split_skipfirst(":")|split(":")|first|ifempty("1")|maybe(tonumber)),
-			"line": (split_skipfirst("/")|split_skipfirst(":")|split_skipfirst(":")),
+			"dir":$dir,
+			"file": $file,
+			"n": $n,
+			"line": $line,
+#			"n":    (split_skipfirst("/")|split_skipfirst(":")|split(":")|first|ifempty("1")|maybe(tonumber)),
+#			"line": (split_skipfirst("/")|split_skipfirst(":")|split_skipfirst(":")),
 		}
 	)'
 }
