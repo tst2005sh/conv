@@ -5,9 +5,6 @@ case "$0" in
 	(*)  scriptdir="$(pwd)/$(dirname "$0")";;
 esac
 
-. "${scriptdir}/lib/conv.lib.sh"
-#. "$scriptdir/deps/jq-mods/jqf.lib.sh"
-
 use_jq_stack() {
 	d=$scriptdir/deps/jq-helpers/lib
 
@@ -16,12 +13,14 @@ use_jq_stack() {
 	. "$d/jq_stack_modload.lib.sh"
 	. "$d/jq_stack_oneline.lib.sh"
 
+	#. "$scriptdir/deps/jq-mods/jqf.lib.sh"
+
 	jqf() {
 		jq_stack modcall "$@"
 	}
 }
 
-while [ $# -gt 2 ]; do
+while [ $# -gt 0 ]; do
 	case "$1" in
 	('-s') shift;set -- --use jq_stack "$@" ;;
 	esac
@@ -34,6 +33,13 @@ while [ $# -gt 2 ]; do
 			exit 1
 		fi
 	;;
+	('-l'|'--list')
+		(	cd "$scriptdir/mods/conv" &&
+			ls -d1 */*.mod.sh |sed -e 's,\.mod\.sh$,,g' | sort
+		)
+		exit 0
+	;;
+	('-w'|'--write') CONV_WRITE=true;; # use for json_ff/flatfiles
 	('--') shift; break ;;
 	('-*') echo >&2 "ERROR: invalid option"; exit 1 ;;
 	(*) break
@@ -41,8 +47,12 @@ while [ $# -gt 2 ]; do
 	shift
 done
 
-# override the conv.lib.sh content
-conv() {
+if [ $# -eq 0 ]; then
+	echo >&2 "Usage: conv [<options>] <fmt1>/<fmt2>[/<fmt3>[/...]] [args...]"
+	exit 1
+fi
+
+_conv() {
 	while [ $# -gt 0 ]; do
 		case "$1" in
 		(*/*/*)
@@ -51,7 +61,7 @@ conv() {
 			local b="${bc_%%/*}"
 			shift;
 			set -- "${a}/${b}" "${bc_}" "$@"
-			conv "$@"
+			_conv "$@"
 			return $?
 		;;
 		(*/*)
@@ -63,21 +73,41 @@ conv() {
 				local name="${a}_to_${b}"
 				"$name" "$@"
 			) | (
-				if [ $# -eq 0 ]; then
-					set -- -
+				if [ $# -gt 0 ]; then
+					_conv "$@"
+				else
+					[ -t 0 ] || cat
 				fi
-				conv "$@"
 			)
 			return $?
 		;;
-		(-)	cat; exit 0
 		esac
 		shift
 	done
-	if [ $# -lt 1 ]; then
-		echo >&2 "Usage: conv [<options>] <fmt1>/<fmt2>[/<fmt3>[/...]] [args...]"
-		return 1
-	fi
 }
 
-conv "$@"
+RequireMod() {
+	if [ -z "$scriptdir" ]; then
+		echo >&2 "ERROR: scriptdir variable not defined"
+		return 1
+	fi
+	if [ -z "$1" ]; then
+		echo >&2 "ERROR: Require: missing argument"
+		return 1
+	fi
+	. "${scriptdir}/mods/$1.mod.sh"
+}
+
+Deps() {
+	local self="Deps"
+	while [ $# -gt 0 ]; do
+		if ! command >/dev/null 2>&1 -v "$1"; then
+			echo >&2 "ERROR: ${self}: missing dependency (command $1)"
+			return 1
+		fi
+		shift
+	done
+	return 0
+}
+
+_conv "$@"
