@@ -1,3 +1,3 @@
 flatfiles_to_rgrepn() {
-	rgrep -Hn '' .
+	rgrep -Hn --color=auto '' .
 }
