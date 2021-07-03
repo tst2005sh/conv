@@ -54,12 +54,23 @@ fi
 
 _conv() {
 	while [ $# -gt 0 ]; do
-		case "$1" in
-		(rgrepn/json_dfv)  shift;set -- "rgrepn/json_dfnl/json_dfv" "$@" ;;
-		(rgrepn/json_ff)   shift;set -- "rgrepn/json_dfnl/json_dfv/json_ff" "$@" ;;
-		(rgrepn/flatfiles) shift;set -- "rgrepn/json_dfnl/json_dfv/json_ff/flatfiles" "$@" ;;
+		local solution="$(case "$1" in
+		(rgrepn/json_dfv)	echo "rgrepn/json_dfnl/json_dfv";;
+		(rgrepn/json_ff)	echo "rgrepn/json_dfnl/json_dfv/json_ff";;
+		(rgrepn/flatfiles)	echo "rgrepn/json_dfnl/json_dfv/json_ff/flatfiles";;
+		(rgrep/json_dfv)	echo "rgrep/rgrepn/json_dfnl/json_dfv";;
+		(json_object/csv)	echo "json_object/json_array/csv";;
+		(json_object/tvs)	echo "json_object/json_array/tsv";;
+		(json_object/rgrep)	echo "json_object/rgrepn/rgrep";;
+
+#./mods/conv/rgrep/json_struct_dfv.mod.sh.via
+
 		(rgrepn/tsv) ;;
-		esac
+		esac)"
+		if [ -n "$solution" ]; then
+			shift;set -- "$solution" "$@"
+		fi
+
 		case "$1" in
 		(*/*/*)
 			local a="${1%%/*}"
@@ -74,17 +85,21 @@ _conv() {
 			local a="${1%%/*}"
 			local b="${1#*/}"
 			shift
-			(
-				RequireMod "conv/${a}/${b}"
-				local name="${a}_to_${b}"
-				"$name" "$@"
-			) | (
-				if [ $# -gt 0 ]; then
+			if [ $# -eq 0 ]; then
+				(
+					RequireMod "conv/${a}/${b}"
+					local name="${a}_to_${b}"
+					"$name" "$@"
+				)
+			else
+				(
+					RequireMod "conv/${a}/${b}"
+					local name="${a}_to_${b}"
+					"$name" "$@"
+				) | (
 					_conv "$@"
-				else
-					[ -t 0 ] || cat
-				fi
-			)
+				)
+			fi
 			return $?
 		;;
 		esac
