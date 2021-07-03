@@ -39,6 +39,7 @@ while [ $# -gt 0 ]; do
 		)
 		exit 0
 	;;
+	('-n'|'--dry-run') CONV_WRITE=false;;
 	('-w'|'--write') CONV_WRITE=true;; # use for json_ff/flatfiles
 	('--') shift; break ;;
 	('-*') echo >&2 "ERROR: invalid option"; exit 1 ;;
@@ -52,8 +53,19 @@ if [ $# -eq 0 ]; then
 	exit 1
 fi
 
+_conv_alias() {
+	case "$1" in
+	(fs) echo "flatfiles";;
+	(R) echo "rgrepn";;
+	esac
+}
+
 _conv() {
 	while [ $# -gt 0 ]; do
+		case "$1" in
+		(fs/*) local z="${1#*/}";shift;set -- "flatfiles/$z" "$@";;
+		(*/fs) local a="${1%/*}";shift;set -- "$a/flatfiles" "$@";;
+		esac
 		local solution="$(case "$1" in
 		(rgrepn/json_dfv)	echo "rgrepn/json_dfnl/json_dfv";;
 		(rgrepn/json_ff)	echo "rgrepn/json_dfnl/json_dfv/json_ff";;
@@ -62,9 +74,7 @@ _conv() {
 		(json_object/csv)	echo "json_object/json_array/csv";;
 		(json_object/tvs)	echo "json_object/json_array/tsv";;
 		(json_object/rgrep)	echo "json_object/rgrepn/rgrep";;
-
-#./mods/conv/rgrep/json_struct_dfv.mod.sh.via
-
+		#./mods/conv/rgrep/json_struct_dfv.mod.sh.via <- indexed_dfv
 		(rgrepn/tsv) ;;
 		esac)"
 		if [ -n "$solution" ]; then

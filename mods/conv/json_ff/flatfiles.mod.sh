@@ -5,8 +5,12 @@ json_ff_to_flatfiles() {
 		else @sh "echo ERROR;"
 		end
 	' |
-	while read -r line; do
-		eval "$line";
-	done
+	if ${CONV_WRITE:-false}; then
+		while read -r line; do
+			eval "$line";
+		done
+	else
+		echo >&2 "Use conv -w to allow flatfiles to create directories/files in $(pwd)"
+	fi
 }
 
