@@ -73,6 +73,7 @@ _conv() {
 		(json_object/csv)	echo "json_object/json_array/csv";;
 		(json_object/tvs)	echo "json_object/json_array/tsv";;
 		(json_object/rgrep)	echo "json_object/rgrepn/rgrep";;
+		(json_dfv/rgrepn)	echo "json_dfv/json_dfnl/rgrepn";;
 		#./mods/conv/rgrep/json_struct_dfv.mod.sh.via <- indexed_dfv
 		(rgrepn/tsv) ;;
 		esac)"
