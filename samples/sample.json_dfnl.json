@@ -1,0 +1,26 @@
+[
+  {
+    "dir": "dir1",
+    "file": "file1",
+    "n": 1,
+    "line": "line 1 of file1"
+  },
+  {
+    "dir": "dir1",
+    "file": "file1",
+    "n": 2,
+    "line": "line 2 of file2"
+  },
+  {
+    "dir": "dir1",
+    "file": "file2",
+    "n": 1,
+    "line": "line 1 of file2"
+  },
+  {
+    "dir": "dir2",
+    "file": "file3",
+    "n": 1,
+    "line": "line 1 of file3 in dir2"
+  }
+]
