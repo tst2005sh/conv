@@ -29,6 +29,8 @@ Like rgrepn but without the line number
 
 ## json_dfnl
 
+it is the json format nearest to `rgrepn`
+
 - dir file number line
 - line is only one line
 - dir can be a path with subdirectories
@@ -46,6 +48,8 @@ Some files or directories on the file system
 
 
 ## json_object O
+
+It is an array of json objects.
 
 sample of JSON data:
 ```json
