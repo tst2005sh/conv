@@ -93,19 +93,28 @@ _conv() {
 		;;
 		(*/*)
 			local a="${1%%/*}"
+			a="${a%%(*}"
 			local b="${1#*/}"
 			shift
+			local bargs=''
+			case "$b" in
+			(*'('*')')
+				bargs="${b#*(}"
+				bargs='('"${bargs}"
+				b="${b%%(*}"
+			;;
+			esac
 			if [ $# -eq 0 ]; then
 				(
 					RequireMod "conv/${a}/${b}"
 					local name="${a}_to_${b}"
-					"$name" "$@"
+					"$name" "$bargs"
 				)
 			else
 				(
 					RequireMod "conv/${a}/${b}"
 					local name="${a}_to_${b}"
-					"$name" "$@"
+					"$name" "$bargs"
 				) | (
 					_conv "$@"
 				)
