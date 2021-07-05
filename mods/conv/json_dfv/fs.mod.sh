@@ -2,6 +2,7 @@ Deps base64
 json_dfv_to_fs() {
 	jq -r '	if type=="array" then .[] else . end|
 		if .dir and .file and .value then
+			.dir|= if startswith("/") then "."+. else . end |
 			@sh "[ -d \(.dir) ] || mkdir -- \(.dir);echo \(.value|@base64)|base64 -d>\("\(.dir//".")/\(.file)")"
 		else @sh "echo ERROR;"
 		end
