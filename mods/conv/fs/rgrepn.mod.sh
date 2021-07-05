@@ -1,3 +1,3 @@
-flatfiles_to_rgrepn() {
+fs_to_rgrepn() {
 	rgrep -Hn --color=auto '' .
 }
