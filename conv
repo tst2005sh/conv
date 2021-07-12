@@ -5,34 +5,34 @@ case "$0" in
 	(*)  scriptdir="$(pwd)/$(dirname "$0")";;
 esac
 
-use_jq_stack() {
-	JQ_STACK_MODDIR="$scriptdir/deps/jq-mods/lib"
-
-	. "$scriptdir/deps/jq-helpers/lib/jq_stack.lib.sh"
-	. "$scriptdir/deps/jq-helpers/lib/jq_stack_modcall.lib.sh"
-	. "$scriptdir/deps/jq-helpers/lib/jq_stack_modload.lib.sh"
-	. "$scriptdir/deps/jq-helpers/lib/jq_stack_oneline.lib.sh"
-
-	#. "$scriptdir/deps/jq-mods/jqf.lib.sh"
-
-	jqf() {
-		jq_stack modcall "$@"
-	}
-}
+#use_jq_stack() {
+#	JQ_STACK_MODDIR="$scriptdir/deps/jq-mods/lib"
+#
+#	. "$scriptdir/deps/jq-helpers/lib/jq_stack.lib.sh"
+#	. "$scriptdir/deps/jq-helpers/lib/jq_stack_modcall.lib.sh"
+#	. "$scriptdir/deps/jq-helpers/lib/jq_stack_modload.lib.sh"
+#	. "$scriptdir/deps/jq-helpers/lib/jq_stack_oneline.lib.sh"
+#
+#	#. "$scriptdir/deps/jq-mods/jqf.lib.sh"
+#
+#	jqf() {
+#		jq_stack modcall "$@"
+#	}
+#}
 
 while [ $# -gt 0 ]; do
-	case "$1" in
-	('-s') shift;set -- --use jq_stack "$@" ;;
-	esac
-	case "$1" in
-	('--use') shift
-		if [ $# -gt 1 ]; then
-			"use_$1"
-		else
-			echo >&2 "ERROR: --use missing argument"
-			exit 1
-		fi
-	;;
+#	case "$1" in
+#	('-s') shift;set -- --use jq_stack "$@" ;;
+#	esac
+#	case "$1" in
+#	('--use') shift
+#		if [ $# -gt 1 ]; then
+#			"use_$1"
+#		else
+#			echo >&2 "ERROR: --use missing argument"
+#			exit 1
+#		fi
+#	;;
 	('-l'|'--list')
 		(	cd "$scriptdir/mods/conv" &&
 			ls -d1 */*.mod.sh |sed -e 's,\.mod\.sh$,,g' | sort
@@ -83,25 +83,25 @@ _conv() {
 
 		case "$1" in
 		(*/*/*)
-			local a="${1%%/*}"
-			local bc_="${1#*/}"
-			local b="${bc_%%/*}"
+			local a="${1%%/*}"		# aa(xx)/bb(yy)/cc(zz) -> aa(xx)
+			local bc_="${1#*/}"		# aa(xx)/bb(yy)/cc(zz) -> bb(yy)/cc(zz)
+			local b="${bc_%%/*}"		# bb(yy)/cc(zz)        -> bb(yy)
 			shift;
-			set -- "${a}/${b}" "${bc_}" "$@"
+			set -- "${a}/${b}" "${bc_}" "$@" # aa(xx)/bb(yy)/cc(zz) --> aa(xx)/bb(yy) bb(yy)/cc(zz)
 			_conv "$@"
 			return $?
 		;;
 		(*/*)
-			local a="${1%%/*}"
-			a="${a%%(*}"
-			local b="${1#*/}"
+			local a="${1%%/*}"		# aa(xx)/bb(yy) -> aa(xx)
+			a="${a%%(*}"			# aa(xx)        -> aa
+			local b="${1#*/}"		# aa(xx)/bb(yy) -> bb(yy)
 			shift
 			local bargs=''
 			case "$b" in
-			(*'('*')')
-				bargs="${b#*(}"
-				bargs='('"${bargs}"
-				b="${b%%(*}"
+			(*'('*')')			# bb(yy)
+				bargs="${b#*(}"		# bb(yy) -> yy)
+				bargs='('"${bargs}"	# yy)    -> (yy)
+				b="${b%%(*}"		# bb(yy) -> bb
 			;;
 			esac
 			if [ $# -eq 0 ]; then
