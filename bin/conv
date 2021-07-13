@@ -1,8 +1,10 @@
 #!/bin/bash
 
-case "$0" in
-	(/*) scriptdir="$(dirname "$0")";;
-	(*)  scriptdir="$(pwd)/$(dirname "$0")";;
+a0="$(readlink -f "$0" || echo "$0")"
+
+case "$a0" in
+	(/*) scriptdir="$(dirname "$a0")/..";;
+	(*)  scriptdir="$(pwd)/$(dirname "$a0")/..";;
 esac
 
 #use_jq_stack() {
@@ -24,7 +26,7 @@ while [ $# -gt 0 ]; do
 #	case "$1" in
 #	('-s') shift;set -- --use jq_stack "$@" ;;
 #	esac
-#	case "$1" in
+	case "$1" in
 #	('--use') shift
 #		if [ $# -gt 1 ]; then
 #			"use_$1"
