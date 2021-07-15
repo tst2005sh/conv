@@ -10,6 +10,5 @@
 
 RequireMod jq_stack3
 tsv_to_json_array() {
-	. "${scriptdir}/deps/jq-mods/lib/fromtsv.jq.lib.sh"
 	jq_stack3 init option -R modcall fromtsv precall '[.,inputs]' run
 }
