@@ -1,4 +1,8 @@
-# yaml -> json
+
+if [ ! -x "${scriptdir}/deps/yaml2json/yaml2json" ]; then
+	echo >&2 "missing dependency 'yaml2json'"
+	exit 1
+fi
 yaml_to_json() {
-	"${PATA_DIR:-.}/thirdparty/yaml2json/yaml2json.py" "$@";
+	"${scriptdir}/deps/yaml2json/yaml2json"
 }
