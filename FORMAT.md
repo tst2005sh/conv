@@ -24,6 +24,7 @@ line 1 of file2
 line 1 of file3 in dir2
 ```
 
+
 ## rgrepn
 
 It is the format returned by the `cd sample/fs && rgrep -Hn '' .` command.
@@ -34,6 +35,7 @@ dir1/file1:2:line 2 of file1
 dir1/file2:1:line 1 of file2
 dir2/file3:1:line 1 of file3 in dir2
 ```
+
 
 ## rgrep
 
@@ -57,11 +59,48 @@ sample:
 {"dir":"dir2","file":"file3","n":1,"line":"line 1 of file3 in dir2"}
 ```
 
+
 ## json_dfv
 
 - dir file value
 - with value like a file content. value can contains multiple lines
 
+```json
+[
+  {
+    "dir": "dir1",
+    "file": "file1",
+    "value": "line 1 of file1\nline 2 of file1"
+  },
+  {
+    "dir": "dir1",
+    "file": "file2",
+    "value": "line 1 of file2"
+  },
+  {
+    "dir": "dir2",
+    "file": "file3",
+    "value": "line 1 of file3 in dir2"
+  }
+]
+```
+
+
+## json_dirobj
+
+```json
+[
+  {
+    "dir": "dir1",
+    "file1": "line 1 of file1\nline 2 of file1",
+    "file2": "line 1 of file2"
+  },
+  {
+    "dir": "dir2",
+    "file3": "line 1 of file3 in dir2"
+  }
+]
+```
 
 
 ## json_object
