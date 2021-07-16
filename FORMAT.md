@@ -4,11 +4,24 @@
 
 ## fs
 
-Any text files in directories
+(I also named it `flatfiles`).
+
+Any text files in directories on the file system.
+
 I use it like a small database:
-```sh
-$ find sample/fs/
-...
+
+See sample in [samples/flatfiles/](./samples/flatfiles/)
+
+```
+./dir1/file1:
+line 1 of file1
+line 2 of file1
+
+./dir1/file2:
+line 1 of file2
+
+./dir2/file3:
+line 1 of file3 in dir2
 ```
 
 ## rgrepn
@@ -17,7 +30,7 @@ It is the format returned by the `cd sample/fs && rgrep -Hn '' .` command.
 Something like:
 ```
 dir1/file1:1:line 1 of file1
-dir1/file1:2:line 2 of file2
+dir1/file1:2:line 2 of file1
 dir1/file2:1:line 1 of file2
 dir2/file3:1:line 1 of file3 in dir2
 ```
@@ -36,18 +49,22 @@ it is the json format nearest to `rgrepn`
 - dir can be a path with subdirectories
 - file is a file name
 
+sample:
+```json
+{"dir":"dir1","file":"file1","n":1,"line":"line 1 of file1"}
+{"dir":"dir1","file":"file1","n":2,"line":"line 2 of file1"}
+{"dir":"dir1","file":"file2","n":1,"line":"line 1 of file2"}
+{"dir":"dir2","file":"file3","n":1,"line":"line 1 of file3 in dir2"}
+```
 
 ## json_dfv
 
 - dir file value
 - with value like a file content. value can contains multiple lines
 
-Some files or directories on the file system
-
-(I also named it `flatfiles`).
 
 
-## json_object O
+## json_object
 
 It is an array of json objects.
 
@@ -57,7 +74,7 @@ sample of JSON data:
   {
     "dir": "./dir1",
     "file": "file1",
-    "value": "line 1 of file1\nline 2 of file2"
+    "value": "line 1 of file1\nline 2 of file1"
   },
   {
     "dir": "./dir1",
@@ -73,7 +90,7 @@ sample of JSON data:
 ```
 
 
-## json_array A
+## json_array
 
 This format is near a spreadsheet
 It is a array of array.
@@ -92,7 +109,7 @@ Sample of JSON data:
   [
     "dir1",
     "file1",
-    "line 1 of file1\nline 2 of file2"
+    "line 1 of file1\nline 2 of file1"
   ],
   [
     "dir1",
@@ -108,43 +125,22 @@ Sample of JSON data:
 ```
 
 
-## ndjson ND
+## ndjson
 
 See ndjson.org
 Usually a stream of json objects.
 
-Usual JSON data:
+The json_object's sample in NDJSON:
 ```json
-[
-  {
-    "dir": "./dir1",
-    "file": "file1",
-    "value": "line 1 of file1\nline 2 of file2"
-  },
-  {
-    "dir": "./dir1",
-    "file": "file2",
-    "value": "line 1 of file2"
-  },
-  {
-    "dir": "./dir2",
-    "file": "file3",
-    "value": "line 1 of file3 in dir2"
-  }
-]
-```
-
-The same data in NDJSON:
-```json
-{"dir":"./dir1","file":"file1","value":"line 1 of file1\nline 2 of file2"}
+{"dir":"./dir1","file":"file1","value":"line 1 of file1\nline 2 of file1"}
 {"dir":"./dir1","file":"file2","value":"line 1 of file2"}
 {"dir":"./dir2","file":"file3","value":"line 1 of file3 in dir2"}
 ```
 
-The json_array sample in NDJSON:
+The json_array's sample in NDJSON:
 ```ndjson
 ["dir","file","value"]
-["dir1","file1","line 1 of file1\nline 2 of file2"]
+["dir1","file1","line 1 of file1\nline 2 of file1"]
 ["dir1","file2","line 1 of file2"]
 ["dir2","file3","line 1 of file3 in dir2"]
 ```
