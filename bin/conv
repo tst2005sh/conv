@@ -60,7 +60,7 @@ _conv() {
 		(tsv/json_dirobj) echo "tsv/json_array/json_object";;
 		esac)"
 		if [ -n "$solution" ]; then
-			shift;set -- "$solution" "$@"
+			shift;set -- $solution "$@"
 		fi
 
 		case "$1" in
