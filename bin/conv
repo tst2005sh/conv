@@ -1,40 +1,14 @@
 #!/bin/bash
 
-a0="$(readlink -f "$0" || echo "$0")"
+a0="$(realpath "$0" 2>/dev/null || readlink -f "$0" 2>/dev/null || echo "$0")"
 
 case "$a0" in
 	(/*) scriptdir="$(dirname "$a0")/..";;
 	(*)  scriptdir="$(pwd)/$(dirname "$a0")/..";;
 esac
 
-#use_jq_stack() {
-#	JQ_STACK_MODDIR="$scriptdir/deps/jq-mods/lib"
-#
-#	. "$scriptdir/deps/jq-helpers/lib/jq_stack.lib.sh"
-#	. "$scriptdir/deps/jq-helpers/lib/jq_stack_modcall.lib.sh"
-#	. "$scriptdir/deps/jq-helpers/lib/jq_stack_modload.lib.sh"
-#	. "$scriptdir/deps/jq-helpers/lib/jq_stack_oneline.lib.sh"
-#
-#	#. "$scriptdir/deps/jq-mods/jqf.lib.sh"
-#
-#	jqf() {
-#		jq_stack modcall "$@"
-#	}
-#}
-
 while [ $# -gt 0 ]; do
-#	case "$1" in
-#	('-s') shift;set -- --use jq_stack "$@" ;;
-#	esac
 	case "$1" in
-#	('--use') shift
-#		if [ $# -gt 1 ]; then
-#			"use_$1"
-#		else
-#			echo >&2 "ERROR: --use missing argument"
-#			exit 1
-#		fi
-#	;;
 	('-l'|'--list')
 		(	cd "$scriptdir/mods/conv" &&
 			ls -d1 */*.mod.sh |sed -e 's,\.mod\.sh$,,g' | sort
@@ -70,14 +44,20 @@ _conv() {
 		esac
 		local solution="$(case "$1" in
 		(rgrepn/json_dfv)	echo "rgrepn/json_dfnl/json_dfv";;
+		(json_dfv/rgrepn)	echo "json_dfv/json_dfnl/rgrepn";;
+		#(fs/rgrepn);;
 		(rgrepn/fs)		echo "rgrepn/json_dfnl/json_dfv/fs";;
 		(rgrep/json_dfv)	echo "rgrep/rgrepn/json_dfv";;
 		(json_object/csv)	echo "json_object/json_array/csv";;
 		(json_object/tvs)	echo "json_object/json_array/tsv";;
-		(json_object/rgrep)	echo "json_object/rgrepn/rgrep";;
-		(json_dfv/rgrepn)	echo "json_dfv/json_dfnl/rgrepn";;
+		#(json_object/rgrep)	echo "json_object/rgrepn/rgrep";;
 		#./mods/conv/rgrep/json_struct_dfv.mod.sh.via <- indexed_dfv
-		(rgrepn/tsv) ;;
+
+		(rgrepn/tsv) echo "rgrepn/json_dfv/json_dirobj json_object/json_array/tsv";;
+		(tsv/rgrepn) echo "tsv/json_array/json_object json_dirobj/json_dfv/rgrepn" ;;
+
+		(json_dirobj/tsv) echo "json_object/json_array/tsv";;
+		(tsv/json_dirobj) echo "tsv/json_array/json_object";;
 		esac)"
 		if [ -n "$solution" ]; then
 			shift;set -- "$solution" "$@"
