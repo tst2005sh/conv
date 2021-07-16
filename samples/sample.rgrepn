@@ -1,4 +1,4 @@
 dir1/file1:1:line 1 of file1
-dir1/file1:2:line 2 of file2
+dir1/file1:2:line 2 of file1
 dir1/file2:1:line 1 of file2
 dir2/file3:1:line 1 of file3 in dir2
