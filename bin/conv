@@ -42,29 +42,27 @@ _conv() {
 		(flatfiles/*) local z="${1#*/}";shift;set -- "fs/$z" "$@";;
 		(*/flatfiles) local a="${1%/*}";shift;set -- "$a/fs" "$@";;
 		esac
-		local solution="$(case "$1" in
-		(rgrepn/json_dfv)	echo "rgrepn/json_dfnl/json_dfv";;
-		(json_dfv/rgrepn)	echo "json_dfv/json_dfnl/rgrepn";;
-		#(fs/rgrepn);;
-		(rgrepn/fs)		echo "rgrepn/json_dfnl/json_dfv/fs";;
-		(rgrep/json_dfv)	echo "rgrep/rgrepn/json_dfv";;
-		(json_object/csv)	echo "json_object/json_array/csv";;
-		(json_object/tvs)	echo "json_object/json_array/tsv";;
-		#(json_object/rgrep)	echo "json_object/rgrepn/rgrep";;
-		#./mods/conv/rgrep/json_struct_dfv.mod.sh.via <- indexed_dfv
 
-		(rgrepn/tsv) echo "rgrepn/json_dfv/json_dirobj json_object/json_array/tsv";;
-		(tsv/rgrepn) echo "tsv/json_array/json_object json_dirobj/json_dfv/rgrepn" ;;
-
-		(json_dirobj/tsv) echo "json_object/json_array/tsv";;
-		(tsv/json_dirobj) echo "tsv/json_array/json_object";;
-		esac)"
+		local solution="$(
+			local a="${1%%/*}"		# aa(xx)/bb(yy)	-> aa(xx)
+			a="${a%%(*}"		#)	# aa(xx)	-> aa
+			local b="${1#*/}"		# aa(xx)/bb(yy)	-> bb(yy)
+			b="${b%%(*}"		#)	# bb(yy)	-> bb
+			if [ -f "${scriptdir}/mods/conv-via/$a/$b.via.sh" ]; then
+				. "${scriptdir}/mods/conv-via/$a/$b.via.sh";
+				"${a}_to_${b}_via"
+			fi
+		)"
 		if [ -n "$solution" ]; then
 			shift;set -- $solution "$@"
+#for x in "$@"; do echo . "$x"; done
 		fi
 
 		case "$1" in
 		(*/*/*)
+			case "${1%%(*}" in
+			(*/*);;
+			esac
 			local a="${1%%/*}"		# aa(xx)/bb(yy)/cc(zz) -> aa(xx)
 			local bc_="${1#*/}"		# aa(xx)/bb(yy)/cc(zz) -> bb(yy)/cc(zz)
 			local b="${bc_%%/*}"		# bb(yy)/cc(zz)        -> bb(yy)
