@@ -9,7 +9,10 @@
 #	jq_stack run
 #}
 
-RequireMod jq_stack3
+json_object_to_json_array_deps() {
+	RequireMod jq_stack3 || return 1
+}
 json_object_to_json_array() {
+	json_object_to_json_array_deps || return 1
 	jq_stack3 init modcall 'object_to_array'"$1" run
 }

@@ -1,5 +1,10 @@
-Deps base64
+json_dfv_to_fs_deps() {
+	Deps base64 || return 1
+	Deps jq || return 1
+	Deps cat || return 1
+}
 json_dfv_to_fs() {
+	json_dfv_to_fs_deps || return 1
 	jq -r '	if type=="array" then .[] else . end|
 		if .dir and .file and .value then
 			.dir|= if startswith("/") then "."+. else . end |

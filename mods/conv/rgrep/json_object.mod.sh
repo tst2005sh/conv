@@ -19,7 +19,12 @@ jq_function_split_skipfirst='
 		(split($sep)|skipfirst|join($sep))
 	;'
 
+rgrep_to_json_object_deps() {
+	Deps jq || return 1
+}
+
 rgrep_to_json_object() {
+	rgrep_to_json_object_deps || return 1
 	jq -R '
 	'"$jq_function_removeprefix"'
 	'"$jq_function_skipfirst"'

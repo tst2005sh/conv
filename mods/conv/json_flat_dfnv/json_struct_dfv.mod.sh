@@ -5,7 +5,11 @@ jq_function_unflat='
 		reduce .[] as $e ({}; .[$e | key] += [$e | del(key)])
 	;'
 
+json_flat_dfnv_to_json_struct_dfv_deps() {
+	Deps jq || return 1
+}
 json_flat_dfnv_to_json_struct_dfv() {
+	json_flat_dfnv_to_json_struct_dfv_deps || return 1
 	jq '
 	'"$jq_function_unflat"'
 		unflat(.dir) | map_values(unflat(.file) | map_values(sort_by(.n)|map(.value)|join("\n")))

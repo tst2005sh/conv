@@ -47,7 +47,12 @@ jq_function_ifempty='
 		if (.=="") then ($v) else (.) end
 	;'
 
+
+rgrepn_to_json_dfnl_deps() {
+	Deps jq || return 1
+}
 rgrepn_to_json_dfnl() {
+	rgrepn_to_json_dfnl_deps || return 1
 	jq -R '
 	'"$jq_function_removeprefix"'
 	'"$jq_function_skipfirst"'

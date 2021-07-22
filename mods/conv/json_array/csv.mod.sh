@@ -1,5 +1,10 @@
-Deps jq
-json_array_to_csv() { jq -r '.[]|@csv'; }
+json_array_to_csv_deps() {
+	Deps jq || return 1
+}
+json_array_to_csv() {
+	json_array_to_csv_deps || return 1
+	jq -r '.[]|@csv'
+}
 
 #json_array_to_csv() {
 #	RequireMod jq;

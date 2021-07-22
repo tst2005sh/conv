@@ -1,5 +1,8 @@
-
+json_dfnl_to_json_dfv_to_ikv_to_obj_deps() {
+	Deps jq || return 1
+}
 json_dfnl_to_json_dfv_to_ikv_to_obj() {
+	json_dfnl_to_json_dfv_to_ikv_to_obj_deps || return 1
 	jq '
 	def dfnl_to_dfv:
 		group_by(.dir+.file)|
