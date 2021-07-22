@@ -15,6 +15,7 @@ while [ $# -gt 0 ]; do
 		)
 		exit 0
 	;;
+	('--deps') CONV_DEPS_ONLY=true;;
 	('-n'|'--dry-run') CONV_WRITE=false;;
 	('-w'|'--write') CONV_WRITE=true;; # use for json_dfv/fs
 	('--') shift; break ;;
@@ -68,7 +69,6 @@ _conv() {
 			local b="${bc_%%/*}"		# bb(yy)/cc(zz)        -> bb(yy)
 			shift;
 			set -- "${a}/${b}" "${bc_}" "$@" # aa(xx)/bb(yy)/cc(zz) --> aa(xx)/bb(yy) bb(yy)/cc(zz)
-			_conv "$@"
 			return $?
 		;;
 		(*/*)
@@ -84,13 +84,29 @@ _conv() {
 				b="${b%%(*}"		# bb(yy) -> bb
 			;;
 			esac
+
 			if [ $# -eq 0 ]; then
 				(
 					RequireMod "conv/${a}/${b}"
 					local name="${a}_to_${b}"
+					if ${CONV_DEPS_ONLY:-false}; then
+						if command -v "${name}_deps" >/dev/null 2>&1; then
+							#echo >&2 "module $a/$b deps function exists"
+							"${name}_deps" && echo >&2 "deps: ok: $a/$b" || echo >&2 "deps: KO: $a/$b"
+						else
+							echo >&2 "module $a/$b deps function is MISSING. Please edit mods/conv/$a/$b.mod.sh"
+							return 1
+						fi
+						return $?
+					fi
 					"$name" "$bargs"
 				)
 			else
+				if ${CONV_DEPS_ONLY:-false}; then
+					_conv "${a}/${b}"
+					_conv "$@"
+					return $?
+				fi
 				(
 					RequireMod "conv/${a}/${b}"
 					local name="${a}_to_${b}"
