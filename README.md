@@ -3,24 +3,24 @@
 
 An util to convert text-based format.
 
+At the beginning it was focused on:
 - TSV <-> json
 - FS files <-> rgrepn <-> json
+
 
 ## supported format
 
 - See [FORMAT](./FORMAT.md)
 
-## convertion supported
+## supported convertion
 
 
 ```sh
-$ conv -l
-base64/raw
+$ conv -l | grep -v raw
 csv/json_array
 csv/json_object
 fs/ncdu
 fs/rgrepn
-hex/raw
 html/xml
 json_array/csv
 json_array/json_object
@@ -40,8 +40,6 @@ json/yaml
 ncdu/json
 ncdu/json2
 ndjson/json
-raw/base64
-raw/hex
 rgrep/json_object
 rgrepn/json_d1fnl
 rgrepn/json_dfnl
@@ -54,7 +52,31 @@ xml/json
 yaml/json
 ```
 
+```sh
+$ conv -l |grep raw
+base64/raw
+hex/raw
+raw/base64
+raw/hex
+```
+
 ## dependencies
+
+No dependency is mandatory (except the shell it self).
+
+## how to check dependencies
+
+You can use the `--deps` option to check if all dependencies are available for a specific convertion pipepline.
+Sample:
+```sh
+$ conv --deps fs/rgrepn/tsv
+deps: ok: fs/rgrepn
+deps: ok: rgrepn/json_dfnl
+deps: ok: json_dfnl/json_dfv
+deps: ok: json_dfv/json_dirobj
+deps: ok: json_object/json_array
+deps: ok: json_array/tsv
+```
 
 Mainly:
 
