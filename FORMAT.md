@@ -91,12 +91,12 @@ sample:
 ```json
 [
   {
-    "dir": "dir1",
+    "/": "dir1",
     "file1": "line 1 of file1\nline 2 of file1",
     "file2": "line 1 of file2"
   },
   {
-    "dir": "dir2",
+    "/": "dir2",
     "file3": "line 1 of file3 in dir2"
   }
 ]
