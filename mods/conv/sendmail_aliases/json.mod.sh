@@ -17,6 +17,10 @@ sendmail_aliases_to_json() {
 	;;
 	('(v3)')
 	jq_stack3 call 'map( (.key) as $key|.value[]|{"key":$key, "value":.} )'
+	#jq_stack3 call 'map( (.key) as $key|.value|map({"key":$key, "value":.})[] )'
+	;;
+	('(v4)')
+	jq_stack3 call 'map((.key) as $key|(.value|length) as $count|.value|to_entries|map({"key":$key, "value":.value, "n":"\(.key+1)/\($count)"})[] )'
 	;;
 	esac
 	jq_stack3 run deinit
