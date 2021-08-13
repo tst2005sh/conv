@@ -4,5 +4,5 @@ utf8_to_utf8bom_deps() {
 }
 utf8_to_utf8bom() {
 	utf8_to_utf8bom_deps || return 1
-	sed '1s/^/\xEF\xBB\xBF/'
+	sed '1s/^\(\xEF\xBB\xBF\|\)/\xEF\xBB\xBF/'
 }
