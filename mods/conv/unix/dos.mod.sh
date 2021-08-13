@@ -3,5 +3,15 @@ unix_to_dos_deps() {
 }
 unix_to_dos() {
 	unix_to_dos_deps || return 1
-	unix2dos -m
+	case "$1" in
+	('(nobom)'|'(without bom)')
+		unix2dos
+	;;
+	('(bom)'|'(with bom)'|'()'|'')
+		unix2dos -m
+	;;
+	(*)
+		echo >&2 ERROR; return 1
+	;;
+	esac
 }
