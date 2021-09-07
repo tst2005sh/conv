@@ -62,7 +62,8 @@ raw/hex
 
 ## dependencies
 
-No dependency is mandatory (except the shell it self).
+A POSIX shell is the first mandatory dependency.
+All other dependencies depends of the convertion you use.
 
 ## how to check dependencies
 
