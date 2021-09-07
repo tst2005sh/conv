@@ -10,7 +10,7 @@ sendmail_aliases_to_json() {
 
 	case "$1" in
 	('(v1)'|"")
-	jq_stack3 call 'map(.value|=join(", "))'
+	jq_stack3 call 'map(.value|=(sort|join(", ")))'
 	;;
 	('(v2)')
 	:
@@ -20,7 +20,7 @@ sendmail_aliases_to_json() {
 	#jq_stack3 call 'map( (.key) as $key|.value|map({"key":$key, "value":.})[] )'
 	;;
 	('(v4)')
-	jq_stack3 call 'map((.key) as $key|(.value|length) as $count|.value|to_entries|map({"key":$key, "value":.value, "n":"\(.key+1)/\($count)"})[] )'
+	jq_stack3 call 'map((.key) as $key|(.value|length) as $count|.value|to_entries|map({"key":$key, "value":.value, "z":"\(.key+1)/\($count)"})[] )'
 	;;
 	esac
 	jq_stack3 run deinit
