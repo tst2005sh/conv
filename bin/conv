@@ -7,6 +7,8 @@ case "$a0" in
 	(*)  scriptdir="$(pwd)/$(dirname "$a0")/..";;
 esac
 
+CONV_I=''
+CONV_O=''
 while [ $# -gt 0 ]; do
 	case "$1" in
 	('-l'|'--list')
@@ -18,6 +20,12 @@ while [ $# -gt 0 ]; do
 	('--deps') CONV_DEPS_ONLY=true;;
 	('-n'|'--dry-run') CONV_WRITE=false;;
 	('-w'|'--write') CONV_WRITE=true;; # use for json_dfv/fs
+	('--in-ndjson') 	CONV_I=true;;
+	('--out-ndjson')	CONV_O=true;;
+	('--no-in-ndjson'|-R)	CONV_I=false;;
+	('--no-out-ndjson'|-r)	CONV_O=false;;
+	('--auto')		CONV_I=true;  CONV_O=true;;
+	('--no-auto')		CONV_I=false; CONV_O=false;;
 	('--') shift; break ;;
 	('-'*) echo >&2 "ERROR: invalid option"; exit 1 ;;
 	(*) break
@@ -25,9 +33,28 @@ while [ $# -gt 0 ]; do
 	shift
 done
 
+# --auto      equals to    --in-ndjson    --out-ndjson
+# --no-auto   equals to --no-in-ndjson --no-out-ndjson
+# --in-ndjson
+# --out-ndjson
+# --no-in-ndjson
+# --no-out-ndjson
+# no option	  : by default like --auto (in=ndjson/json out=json/ndjson)
+
 if [ $# -eq 0 ]; then
 	echo >&2 "Usage: conv [<options>] <fmt1>/<fmt2>[/<fmt3>[/...]] [args...]"
 	exit 1
+fi
+
+if [ -z "$CONV_I" ] && [ -z "$CONV_O" ]; then
+	CONV_I=true; CONV_O=true
+fi
+
+if ${CONV_I:-false}; then
+	set -- ndjson/json "$@"
+fi
+if ${CONV_O:-false}; then
+	set -- "$@" json/ndjson
 fi
 
 _conv_alias() {
