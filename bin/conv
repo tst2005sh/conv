@@ -17,15 +17,11 @@ while [ $# -gt 0 ]; do
 		)
 		exit 0
 	;;
-	('--deps') CONV_DEPS_ONLY=true;;
-	('-n'|'--dry-run') CONV_WRITE=false;;
-	('-w'|'--write') CONV_WRITE=true;; # use for json_dfv/fs
-	('--in-ndjson'|-I) 	CONV_I=true;;
-	('--out-ndjson'|-O)	CONV_O=true;;
-	('--no-in-ndjson')	CONV_I=false;;
-	('--no-out-ndjson')	CONV_O=false;;
-	('--ndjson')		CONV_I=true;  CONV_O=true;;
-	('--no-ndjson')		CONV_I=false; CONV_O=false;;
+	('--deps')              CONV_DEPS_ONLY=true;;
+	('-n'|'--dry-run')      CONV_WRITE=false;;
+	('-w'|'--write')        CONV_WRITE=true;; # use for json_dfv/fs
+	('-I'|'--in-ndjson')    CONV_I=true;;
+	('-O'|'--out-ndjson')   CONV_O=true;;
 	('--') shift; break ;;
 	('-'*) echo >&2 "ERROR: invalid option"; exit 1 ;;
 	(*) break
@@ -33,13 +29,8 @@ while [ $# -gt 0 ]; do
 	shift
 done
 
-# --ndjson      equals to    --in-ndjson    --out-ndjson
-# --no-ndjson   equals to --no-in-ndjson --no-out-ndjson
-# --in-ndjson
-# --out-ndjson
-# --no-in-ndjson
-# --no-out-ndjson
-# no option	  : by default nothing
+# -I|--in-ndjson      add an ndjson/json at the beginning
+# -O|--out-ndjson     add an json/ndjson at the ending
 
 if [ $# -eq 0 ]; then
 	echo >&2 "Usage: conv [<options>] <fmt1>/<fmt2>[/<fmt3>[/...]] [args...]"
