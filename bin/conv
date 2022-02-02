@@ -19,7 +19,7 @@ while [ $# -gt 0 ]; do
 	('-n'|'--dry-run') CONV_WRITE=false;;
 	('-w'|'--write') CONV_WRITE=true;; # use for json_dfv/fs
 	('--') shift; break ;;
-	('-*') echo >&2 "ERROR: invalid option"; exit 1 ;;
+	('-'*) echo >&2 "ERROR: invalid option"; exit 1 ;;
 	(*) break
 	esac
 	shift
