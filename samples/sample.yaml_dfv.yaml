@@ -1,0 +1,11 @@
+- dir: dir1
+  file: file1
+  value: |-
+    line 1 of file1
+    line 2 of file1
+- dir: dir1
+  file: file2
+  value: line 1 of file2
+- dir: dir2
+  file: file3
+  value: line 1 of file3 in dir2
