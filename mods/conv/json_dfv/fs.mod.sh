@@ -12,7 +12,7 @@ json_dfv_to_fs() {
 		if type=="array" then .[] else . end
 		| select(.dir and .file and .value)
 		| .dir|= if startswith("/") then "."+. else . end
-		| @sh "[ -d \(.dir) ] || mkdir -- \(.dir);echo \(.value|@base64)|base64 -d>\("\(.dir//".")/\(.file)")"
+		| @sh "[ -d \(.dir) ] || ${mkdir:-mkdir} -- \(.dir);echo \(.value|@base64)|base64 -d>\("\(.dir//".")/\(.file)")"
 	'
 	;;
 	('(v2)')
@@ -30,7 +30,7 @@ json_dfv_to_fs() {
 		| group_by(.dir)
 
 		| map(
-		(first|if .dir then .dir|@sh "[ -d \(.) ] || mkdir -- \(.)" else @sh "echo ERROR;" end),
+		(first|if .dir then .dir|@sh "[ -d \(.) ] || ${mkdir:-mkdir}  -- \(.)" else @sh "echo ERROR;" end),
 		(
 			.[]
 			| select(.dir and .file and .value)
@@ -43,7 +43,8 @@ json_dfv_to_fs() {
 	jq -r '
 		.[]
 		| select(.dir and .file and .value)
-		| @sh "[ -d \(.dir) ] || mkdir -- \(.dir);base64 -d >\("\(.dir//".")/\(.file)") <<@" + "\n\(.value|@base64)\n@"
+		| .dir|= if startswith("/") then "."+. else . end
+		| @sh "[ -d \(.dir) ] || ${mkdir:-mkdir} -- \(.dir);base64 -d >\("\(.dir//".")/\(.file)") <<@" + "\n\(.value|@base64)\n@"
 	'
 	;;
 	esac |
