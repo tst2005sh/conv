@@ -4,6 +4,7 @@ json_array_to_csv_deps() {
 json_array_to_csv() {
 	json_array_to_csv_deps || return 1
 	jq -r '.[]|@csv'
+	# |map(if type=="array" or type=="object" then "\(tostring)" else . end)
 }
 
 #json_array_to_csv() {
