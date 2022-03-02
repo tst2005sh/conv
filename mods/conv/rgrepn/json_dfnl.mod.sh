@@ -31,16 +31,7 @@ jq_function_split_skipfirst='
 		(split($sep)|skipfirst|join($sep))
 	;'
 
-#jq_function_trytonumber='
-#	def trytonumber:
-#		if (try (.|tonumber) catch false) then (.|tonumber) else (.) end
-#	;'
-
-#jq_function_maybe='def maybe(f): if (try (f) catch false) then (f) else (.) end;'
-jq_function_maybe='
-	def maybe(f):
-		(f?//.)
-	;'
+jq_function_maybe='def maybe(f): . as $orig|try f catch $orig;'
 
 jq_function_ifempty='
 	def ifempty($v):
