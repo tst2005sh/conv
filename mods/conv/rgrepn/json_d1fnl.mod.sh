@@ -36,11 +36,8 @@ jq_function_trytonumber='
 		if (try (.|tonumber) catch false) then (.|tonumber) else (.) end
 	;'
 
-#jq_function_maybe='def maybe(f): if (try (f) catch false) then (f) else (.) end;'
-jq_function_maybe='
-	def maybe(f):
-		(f?//.)
-	;'
+
+jq_function_maybe='def maybe(f): . as $orig|try f catch $orig;'
 
 jq_function_ifempty='
 	def ifempty($v):
