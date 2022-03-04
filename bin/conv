@@ -74,6 +74,18 @@ _conv() {
 		fi
 
 		case "$1" in
+		(?*-) # gzip- -> gzip/raw
+			local a="$1";shift
+			set -- "${a%[+-]}/raw" "$@"
+			continue
+		;;
+		(?*+) # gzip+ -> raw/gzip
+			local a="$1";shift
+			set -- "raw/${a%[+-]}" "$@"
+			continue
+		;;
+		esac
+		case "$1" in
 		(*/*/*)
 			case "${1%%(*}" in
 			(*/*);;
@@ -143,6 +155,10 @@ RequireMod() {
 	fi
 	if [ -z "$1" ]; then
 		echo >&2 "ERROR: Require: missing argument"
+		return 1
+	fi
+	if [ ! -f "${scriptdir}/mods/$1.mod.sh" ]; then
+		echo >&2 "ERROR: $a/$b not available"
 		return 1
 	fi
 	. "${scriptdir}/mods/$1.mod.sh"
