@@ -8,5 +8,5 @@ html_to_xml_deps() {
 
 html_to_xml() {
 	html_to_xml_deps || return 1
-	tidy -q -asxml 2>&-
+	tidy --tidy-mark no --wrap 0 --wrap-sections no -q -asxml
 }
