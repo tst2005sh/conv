@@ -8,9 +8,9 @@
 #}
 
 json_array_to_json_object_deps() {
-	RequireMod jq_stack3 || return 1
+	RequireMod jq_stack4 || return 1
 }
 json_array_to_json_object() {
 	json_array_to_json_object_deps || return 1
-	jq_stack3 init option -cM modcall array_to_object run
+	jq_stack4 -cM :modcall array_to_object :run
 }

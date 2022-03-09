@@ -10,10 +10,10 @@
 #}
 
 json_object_to_json_array_deps() {
-	RequireMod jq_stack3 || return 1
+	RequireMod jq_stack4 || return 1
 }
 json_object_to_json_array() {
 	json_object_to_json_array_deps || return 1
 	if [ "$1" = "()" ]; then set -- ""; fi
-	jq_stack3 init modcall 'object_to_array'"$1" run
+	jq_stack4 :modcall 'object_to_array'"$1" :run
 }

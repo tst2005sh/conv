@@ -1,0 +1,74 @@
+{
+  "header": [
+    {
+      "key": "version",
+      "value": "\"9\""
+    },
+    {
+      "key": "logging",
+      "value": "\"yes\""
+    }
+  ],
+  "filters": [
+    [
+      {
+        "key": "name",
+        "value": "\"SPAM \\\"BLAH\\\" to:blah\""
+      },
+      {
+        "key": "enabled",
+        "value": "\"yes\""
+      },
+      {
+        "key": "type",
+        "value": "\"17\""
+      },
+      {
+        "key": "action",
+        "value": "\"Move to folder\""
+      },
+      {
+        "key": "actionValue",
+        "value": "\"mailbox://nobody@Local%20Folders/spam/blah\""
+      },
+      {
+        "key": "action",
+        "value": "\"Stop execution\""
+      },
+      {
+        "key": "condition",
+        "value": "\"AND (to,is,blah@my.com) AND (subject,contains,BLAH)\""
+      }
+    ],
+    [
+      {
+        "key": "name",
+        "value": "\"SPAM foo.bar@buz.com\""
+      },
+      {
+        "key": "enabled",
+        "value": "\"yes\""
+      },
+      {
+        "key": "type",
+        "value": "\"17\""
+      },
+      {
+        "key": "action",
+        "value": "\"Move to folder\""
+      },
+      {
+        "key": "actionValue",
+        "value": "\"mailbox://nobody@Local%20Folders/spam/foo.bar%40buz.com\""
+      },
+      {
+        "key": "action",
+        "value": "\"Stop execution\""
+      },
+      {
+        "key": "condition",
+        "value": "\"AND (from,contains,foo.bar@buz.com) AND (to or cc,doesn't contain,my.com)\""
+      }
+    ]
+  ]
+}

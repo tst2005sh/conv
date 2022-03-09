@@ -9,9 +9,9 @@
 #}
 
 tsv_to_json_array_deps() {
-	RequireMod jq_stack3 || return 1
+	RequireMod jq_stack4 || return 1
 }
 tsv_to_json_array() {
 	tsv_to_json_array_deps || return 1
-	jq_stack3 init option -R modcall fromtsv precall '[.,inputs]' run
+	jq_stack4 -R :precall '[.,inputs]' :modcall fromtsv :run
 }

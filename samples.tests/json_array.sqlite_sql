@@ -1,0 +1,8 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE "data" ( `dir` text PRIMARY KEY, `file` text, `value` text );
+INSERT INTO "data" VALUES( 'dir1', 'file1', 'line 1 of file1
+line 2 of file1' );
+INSERT INTO "data" VALUES( 'dir1', 'file2', 'line 1 of file2' );
+INSERT INTO "data" VALUES( 'dir2', 'file3', 'line 1 of file3 in dir2' );
+COMMIT;
