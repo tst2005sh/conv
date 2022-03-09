@@ -1,0 +1,18 @@
+[
+  {
+    "key": "postmaster",
+    "value": "root"
+  },
+  {
+    "key": "clamav",
+    "value": "root"
+  },
+  {
+    "key": "group1",
+    "value": "postmaster, titi@exemple.net, toto@exemple.net"
+  },
+  {
+    "key": "foo",
+    "value": "\\bar, group1, postmaster"
+  }
+]

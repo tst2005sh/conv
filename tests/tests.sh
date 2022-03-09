@@ -45,13 +45,20 @@ test_conv "$rgrepn" rgrepn/json_dfnl samples.tests/rgrepn.json_dfnl
 test_conv "$rgrep" rgrep/rgrepn "$rgrepn"
 test_conv "$rgrep" rgrep/json_object samples.tests/rgrepn.json_object
 
-# modified:   mods/conv/ndjson/json.mod.sh
-# modified:   mods/conv/sendmail_aliases/json.mod.sh
-
 tb_filter_dat=samples/sample.thunderbird.msgFilterRules.dat
 tb_filter_json=samples.tests/tb_filter_dat.tb_filter_json
 test_conv "$tb_filter_dat" tb_filter_dat/tb_filter_json "$tb_filter_json"
 test_conv "$tb_filter_json" tb_filter_json/tb_filter_dat "$tb_filter_dat"
+
+# modified:   mods/conv/ndjson/json.mod.sh
+# modified:   mods/conv/sendmail_aliases/json.mod.sh
+
+sendmail_aliases=samples.tests/sendmail_aliases_json.sendmail_aliases
+sendmail_aliases_json=samples.tests/sendmail_aliases.sendmail_aliases_json
+test_conv "samples/sample.sendmail_aliases" sendmail_aliases/sendmail_aliases_json "$sendmail_aliases_json"
+test_conv "$sendmail_aliases_json" sendmail_aliases'(v1)'/sendmail_aliases_json "$sendmail_aliases.v1"
+test_conv "$sendmail_aliases_json" sendmail_aliases'(v3)'/sendmail_aliases_json "$sendmail_aliases.v3"
+test_conv "$sendmail_aliases_json" sendmail_aliases/sendmail_aliases_json "$sendmail_aliases"
 
 exit
 

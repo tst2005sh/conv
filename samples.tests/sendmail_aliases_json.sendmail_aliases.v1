@@ -1,0 +1,74 @@
+[
+  {
+    "key": "[",
+    "value": ""
+  },
+  {
+    "key": "  {",
+    "value": ""
+  },
+  {
+    "key": "    \"key\"",
+    "value": ", \"postmaster\""
+  },
+  {
+    "key": "    \"value\"",
+    "value": "\"root\""
+  },
+  {
+    "key": "  },",
+    "value": ""
+  },
+  {
+    "key": "  {",
+    "value": ""
+  },
+  {
+    "key": "    \"key\"",
+    "value": ", \"clamav\""
+  },
+  {
+    "key": "    \"value\"",
+    "value": "\"root\""
+  },
+  {
+    "key": "  },",
+    "value": ""
+  },
+  {
+    "key": "  {",
+    "value": ""
+  },
+  {
+    "key": "    \"key\"",
+    "value": ", \"group1\""
+  },
+  {
+    "key": "    \"value\"",
+    "value": "\"postmaster, titi@exemple.net, toto@exemple.net\""
+  },
+  {
+    "key": "  },",
+    "value": ""
+  },
+  {
+    "key": "  {",
+    "value": ""
+  },
+  {
+    "key": "    \"key\"",
+    "value": ", \"foo\""
+  },
+  {
+    "key": "    \"value\"",
+    "value": "\"\\\\bar, group1, postmaster\""
+  },
+  {
+    "key": "  }",
+    "value": ""
+  },
+  {
+    "key": "]",
+    "value": ""
+  }
+]
