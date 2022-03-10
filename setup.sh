@@ -14,6 +14,9 @@ git clone https://github.com/hay/xml2json
 [ -e json2yaml ] ||
 git clone https://github.com/redsymbol/json2yaml
 
+[ -e csv2json ] ||
+git clone https://github.com/tst2005sh/csv2json csv2json
+
 #[ -e yaml2json ] ||
 #git clone https://github.com/tst2005sh/yaml2json
 
