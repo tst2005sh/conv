@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 a0="$(realpath "$0" 2>/dev/null || readlink -f "$0" 2>/dev/null || echo "$0")"
 
