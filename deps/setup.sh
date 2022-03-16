@@ -1,6 +1,5 @@
 set -e
-cd "$(dirname "$0")"
-cd deps && {
+cd "$(dirname "$0")/../deps/"
 
 [ -e "jq-helpers" ] ||
 git clone https://github.com/tst2005sh/jq-helpers
@@ -20,8 +19,5 @@ git clone https://github.com/tst2005sh/csv2json csv2json
 #[ -e yaml2json ] ||
 #git clone https://github.com/tst2005sh/yaml2json
 
-}
-
 # https://pypi.org/project/yq/
 # https://github.com/martinblech/xmltodict
-
