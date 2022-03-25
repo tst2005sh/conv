@@ -1,5 +1,5 @@
 
-csv_to_json_array_deps() {
+csv_to_ndjson_array_deps() {
 	if [ ! -x "${scriptdir}/deps/csv2json/csv2ndjson_array.py" ]; then
 		echo >&2 "missing dependency 'csv2json'"
 		return 1
@@ -8,9 +8,8 @@ csv_to_json_array_deps() {
 	Deps "${scriptdir}/deps/csv2json/csv2ndjson_array.py" || return 1
 
 }
-csv_to_json_array() {
-	csv_to_json_array_deps || return 1
-	"${scriptdir}/deps/csv2json/csv2ndjson_array.py" | jq -sc .
-	#"${scriptdir}/deps/csv2json/csv2json_array.py3"
+csv_to_ndjson_array() {
+	csv_to_ndjson_array_deps || return 1
+	"${scriptdir}/deps/csv2json/csv2ndjson_array.py"
 }
 

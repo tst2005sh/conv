@@ -24,6 +24,7 @@ test_conv() {
 test_conv "$csv" csv/json_array/tsv "$tsv"
 test_conv "$tsv" tsv/json_array/csv "$csv"
 test_conv "$tsv" tsv/json_array samples.tests/tsv.json_array
+test_conv "$csv" csv/ndjson_array/csv "$csv"
 test_conv "$csv" csv/json_array/csv "$csv"
 test_conv "$csv" csv/json_array samples.tests/csv.json_array
 test_conv "$csv" csv/json_object samples.tests/csv.json_object
