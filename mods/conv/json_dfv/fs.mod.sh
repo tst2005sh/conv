@@ -5,13 +5,17 @@ json_dfv_to_fs_deps() {
 }
 json_dfv_to_fs() {
 	json_dfv_to_fs_deps || return 1
-
+	local jq_code_to_have_final_lf='.value|=if endswith("\n") then . else (.+"\n") end'
 	case "$1" in
 	('(v1)'|"")
 	jq -r '
 		if type=="array" then .[] else . end
 		| select(.dir and .file and .value)
 		| .dir|= if startswith("/") then "."+. else . end
+		| '"$(
+			[ "$CONV_JSON_DFV_TO_FS" = "raw" ] && echo . ||
+			echo "$jq_code_to_have_final_lf"
+		)"'
 		| @sh "[ -d \(.dir) ] || mkdir -- \(.dir);echo \(.value|@base64)|base64 -d>\("\(.dir//".")/\(.file)")"
 	'
 	;;
@@ -24,6 +28,10 @@ json_dfv_to_fs() {
 		| map(
 			select(.dir and .file and .value)
 			| .dir|= if startswith("/") then "."+. else . end
+			| '"$(
+				[ "$CONV_JSON_DFV_TO_FS" = "raw" ] && echo . ||
+				echo "$jq_code_to_have_final_lf"
+			)"'
 		)
 
 		# process per directory
@@ -43,6 +51,10 @@ json_dfv_to_fs() {
 	jq -r '
 		.[]
 		| select(.dir and .file and .value)
+		| '"$(
+			[ "$CONV_JSON_DFV_TO_FS" = "raw" ] && echo . ||
+			echo "$jq_code_to_have_final_lf"
+		)"'
 		| @sh "[ -d \(.dir) ] || mkdir -- \(.dir);base64 -d >\("\(.dir//".")/\(.file)") <<@" + "\n\(.value|@base64)\n@"
 	'
 	;;
