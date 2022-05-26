@@ -1,6 +1,6 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
-CREATE TABLE "data" ( `dir` text PRIMARY KEY, `file` text, `value` text );
+CREATE TABLE "data" ( `dir` TEXT, `file` TEXT, `value` TEXT );
 INSERT INTO "data" VALUES( 'dir1', 'file1', 'line 1 of file1
 line 2 of file1' );
 INSERT INTO "data" VALUES( 'dir1', 'file2', 'line 1 of file2' );
