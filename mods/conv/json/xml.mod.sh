@@ -1,12 +1,14 @@
 json_to_xml_deps() {
-	if [ ! -x "${scriptdir:-.}/deps/xml2json/xml2json.py" ]; then
-		echo >&2 "Missing util. No such ${scriptdir:-.}/deps/xml2json/xml2json.py (Maybe, git clone https://github.com/hay/xml2json ?)"
+	local name=json_to_xml
+	local f="${scriptdir:-.}/deps/conv-py.$name/bin/$name.py23"
+	if [ ! -x "f" ]; then
+		echo >&2 "missing dependency '${scriptdir:-.}/deps/conv-py.$name'"
 		return 1
 	fi
-	Deps "${scriptdir:-.}/deps/xml2json/xml2json.py" || return 1
+	Deps "$f" || return 1
 	Deps python || return 1
 }
 json_to_xml() {
 	json_to_xml_deps || return 1
-	"${scriptdir:-.}/deps/xml2json/xml2json.py" --type json2xml
+	"${scriptdir:-.}/deps/conv-py.json_to_xml/bin/json_to_xml.py23"
 }

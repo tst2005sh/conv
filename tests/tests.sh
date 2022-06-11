@@ -19,7 +19,7 @@ test_conv() {
 	if [ ! -f "$c" ]; then
 		cat "$a" | ./bin/conv "$b" > "$c"
 	fi
-	diff -u <(cat "$a" | ./bin/conv "$b") "$c" && echo "ok: $b" || echo "fail: $b"
+	diff -u <(cat "$a" | ./bin/conv "$b") "$c" && echo "ok: $b" || echo "fail: $b ; run: ./bin/conv '$b' < '$a'"
 }
 test_conv "$csv" csv/json_array/tsv "$tsv"
 test_conv "$tsv" tsv/json_array/csv "$csv"

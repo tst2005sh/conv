@@ -1,13 +1,15 @@
 
 json_to_yaml_deps() {
-	if [ ! -x "${scriptdir}/deps/json2yaml/json2yaml" ]; then
-		echo >&2 "missing dependency 'json2yaml'"
+	local name=json_to_yaml
+	local f="${scriptdir}/deps/conv-py.$name/bin/$name.py23"
+	if [ ! -x "$f" ]; then
+		echo >&2 "missing dependency 'conv-py.$name'"
 		return 1
 	fi
-	Deps python3 || return 1
-	Deps "${scriptdir}/deps/json2yaml/json2yaml" || return 1
+	Deps "$f" || return 1
+	Deps python || return 1
 }
 json_to_yaml() {
 	json_to_yaml_deps || return 1
-	"${scriptdir}/deps/json2yaml/json2yaml"
+	"${scriptdir}/deps/conv-py.json_to_yaml/bin/json_to_yaml.py23"
 }

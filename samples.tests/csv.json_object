@@ -1,1 +1,1 @@
-[{"value": "line 1 of file1\nline 2 of file1", "file": "file1", "dir": "dir1"}, {"value": "line 1 of file2", "file": "file2", "dir": "dir1"}, {"value": "line 1 of file3 in dir2", "file": "file3", "dir": "dir2"}]
+[{"dir":"dir1","file":"file1","value":"line 1 of file1\nline 2 of file1"},{"dir":"dir1","file":"file2","value":"line 1 of file2"},{"dir":"dir2","file":"file3","value":"line 1 of file3 in dir2"}]

@@ -1,16 +1,16 @@
 
 csv_to_json_array_deps() {
-	if [ ! -x "${scriptdir}/deps/csv2json/csv2ndjson_array.py" ]; then
-		echo >&2 "missing dependency 'csv2json'"
+	local name=csv_to_json
+	local f="${scriptdir:-.}/deps/conv-py.$name/bin/${name}_array.py3"
+	if [ ! -x "$f" ]; then
+		echo >&2 "missing dependency 'conv-py.csv_to_json'"
 		return 1
 	fi
-	Deps python2 || return 1
-	Deps "${scriptdir}/deps/csv2json/csv2ndjson_array.py" || return 1
-
+	Deps "$f" || return 1
+	Deps python3 || return 1
 }
 csv_to_json_array() {
 	csv_to_json_array_deps || return 1
-	"${scriptdir}/deps/csv2json/csv2ndjson_array.py" | jq -sc .
-	#"${scriptdir}/deps/csv2json/csv2json_array.py3"
+	"${scriptdir}/deps/conv-py.csv_to_json/bin/csv_to_json_array.py3"
 }
 
