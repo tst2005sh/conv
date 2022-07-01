@@ -6,9 +6,9 @@ json_to_xml_deps() {
 		return 1
 	fi
 	Deps "$f" || return 1
-	Deps python || return 1
+	Deps python3 python python2 || return 1
 }
 json_to_xml() {
 	json_to_xml_deps || return 1
-	"${scriptdir:-.}/deps/conv-py.json_to_xml/bin/json_to_xml.py23"
+	"$(CommandAny python3 python python2)" "${scriptdir:-.}/deps/conv-py.json_to_xml/bin/json_to_xml.py23"
 }
