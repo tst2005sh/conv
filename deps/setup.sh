@@ -20,6 +20,7 @@ for d in \
 	conv-py.json_to_yaml \
 	conv-py.xml_to_json \
 	conv-py.json_to_xml \
+	conv-py3.xml_to_json.via_xmltodict \
 ; do
 	[ -e "$d" ] ||
 	git clone "https://github.com/tst2005sh/$d"
