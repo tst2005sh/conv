@@ -1,7 +1,7 @@
 json_to_xml_deps() {
 	local name=json_to_xml
 	local f="${scriptdir:-.}/deps/conv-py.$name/bin/$name.py23"
-	if [ ! -x "f" ]; then
+	if [ ! -x "$f" ]; then
 		echo >&2 "missing dependency '${scriptdir:-.}/deps/conv-py.$name'"
 		return 1
 	fi
