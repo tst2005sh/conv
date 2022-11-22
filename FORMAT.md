@@ -27,7 +27,7 @@ line 1 of file3 in dir2
 
 ## rgrepn
 
-It is the format returned by the `cd sample/fs && rgrep -Hn '' .` command.
+It is the format returned by the `cd sample/fs && grep -r -Hn '' .` command.
 Something like:
 ```
 dir1/file1:1:line 1 of file1
