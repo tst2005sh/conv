@@ -7,7 +7,7 @@ csv_to_json_object_deps() {
 		return 1
 	fi
 	Deps "$f" || return 1
-	DepsAny python{3,,2} || return 1
+	DepsAny python3 python python2 || return 1
 }
 csv_to_json_object() {
 	csv_to_json_object_deps || return 1

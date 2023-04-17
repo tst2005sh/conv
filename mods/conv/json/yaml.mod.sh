@@ -7,7 +7,7 @@ json_to_yaml_deps() {
 		return 1
 	fi
 	Deps "$f" || return 1
-	DepsAny python{3,,2} || return 1
+	DepsAny python3 python python2 || return 1
 }
 json_to_yaml() {
 	json_to_yaml_deps || return 1
