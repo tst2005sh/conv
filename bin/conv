@@ -18,6 +18,7 @@ while [ $# -gt 0 ]; do
 		exit 0
 	;;
 	('--deps')              CONV_DEPS_ONLY=true;;
+	('--showdeps')		CONV_DEPS_ONLY=true;CONV_SHOW_DEPS=true;;
 	('-n'|'--dry-run')      CONV_WRITE=false;;
 	('-w'|'--write')        CONV_WRITE=true;; # use for json_dfv/fs
 	('-I'|'--in-ndjson')    CONV_I=true;;
@@ -118,7 +119,18 @@ _conv() {
 					if ${CONV_DEPS_ONLY:-false}; then
 						if command -v "${name}_deps" >/dev/null 2>&1; then
 							#echo >&2 "module $a/$b deps function exists"
-							"${name}_deps" && echo >&2 "deps: ok: $a/$b" || echo >&2 "deps: KO: $a/$b"
+							if ${CONV_SHOW_DEPS:-false}; then
+								(
+									scriptdir=.
+									Deps() { echo "Deps: $*"; }
+									DepsAny() { echo "DepsAny: $*"; }
+									"${name}_deps"
+								)
+								return 0
+							fi
+							"${name}_deps" &&
+							echo >&2 "deps: ok: $a/$b" ||
+							echo >&2 "deps: KO: $a/$b"
 						else
 							echo >&2 "module $a/$b deps function is MISSING. Please edit mods/conv/$a/$b.mod.sh"
 							return 1
