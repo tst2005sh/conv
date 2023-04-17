@@ -6,7 +6,7 @@ json_to_xml_deps() {
 		return 1
 	fi
 	Deps "$f" || return 1
-	Deps python3 python python2 || return 1
+	DepsAny python{3,,2} || return 1
 }
 json_to_xml() {
 	json_to_xml_deps || return 1

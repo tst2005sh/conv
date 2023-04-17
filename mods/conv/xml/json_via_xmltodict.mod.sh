@@ -6,7 +6,7 @@ xml_to_json_via_xmltodict_deps() {
 		return 1
 	fi
 	Deps "$f" || return 1
-	DepsAny python3 || return 1
+	DepsAny python{3,} || return 1
 }
 xml_to_json_via_xmltodict() {
 	xml_to_json_via_xmltodict_deps || return 1
