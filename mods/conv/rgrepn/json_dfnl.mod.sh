@@ -8,7 +8,7 @@
 #jq_function_split1='def split1($sep): [split($sep)|(first,(skipfirst|join($sep)))];'
 #jq_function_splitn='def splitn($sep;$n): [split($sep)|(.[0:$n],(.[$n:]|join($sep)))];'
 
-. "$scriptdir/deps/jq-mods/lib/dirname_filename.jq.lib.sh"
+dir="$scriptdir/deps/jq-mods/lib" . "$scriptdir/deps/jq-mods/lib/dirname_filename.jq.lib.sh"
 
 # RGREP
 # [.../dir/]dir '/' file ':' value
