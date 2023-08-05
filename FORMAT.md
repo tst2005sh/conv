@@ -201,6 +201,8 @@ The json_array's sample in NDJSON:
 
 ## base64
 
+## base64url
+
 ## hex
 
 ## gzip

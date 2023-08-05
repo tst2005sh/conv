@@ -16,9 +16,15 @@ At the beginning it was focused on:
 
 
 ```sh
-$ conv -l | grep -v raw
+$ conv -l | grep -v raw | sort 
+base64/base64url
+base64url/base64
 csv/json_array
+csv/json_array_via_jq
 csv/json_object
+csv/ndjson_array
+csv/ods
+dos/unix
 fs/ncdu
 fs/rgrepn
 html/xml
@@ -36,28 +42,41 @@ json_dirobj/json_dfv
 json_flat_dfnv/json_struct_dfv
 json/ndjson
 json_object/json_array
+json/xml
 json/yaml
+ncdu/find
 ncdu/json
 ncdu/json2
 ndjson/json
+ods/csv
 rgrep/json_object
 rgrepn/json_d1fnl
 rgrepn/json_dfnl
 rgrepn/rgrep
 rgrep/rgrepn
+sendmail_aliases_json/sendmail_aliases
+sendmail_aliases/sendmail_aliases_json
 sqlite_sql/json_array
 sqlite_sql/sqlite
+tb_filter_dat/tb_filter_json
+tb_filter_json/tb_filter_dat
 tsv/json_array
+unix/dos
+utf8bom/utf8
+utf8/utf8bom
+xml/html
 xml/json
+xml/json_via_xmltodict
 yaml/json
 ```
 
 ```sh
-$ conv -l |grep raw
+$ conv -l |grep raw | sort
 base64/raw
 hex/raw
 raw/base64
 raw/hex
+raw/raw
 ```
 
 ## dependencies
@@ -90,13 +109,13 @@ Optionnal:
 - mlr : [miller](https://miller.readthedocs.io/)
 
 ## hex support
+
 - od, tr (from coreutils)
 - lua
 
 ## xml support
 
 - tinyxml
-
 
 ## yaml supprt
 

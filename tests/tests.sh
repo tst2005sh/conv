@@ -19,7 +19,18 @@ test_conv() {
 	if [ ! -f "$c" ]; then
 		cat "$a" | ./bin/conv "$b" > "$c"
 	fi
-	diff -u <(cat "$a" | ./bin/conv "$b") "$c" && echo "ok: $b" || echo "fail: $b ; run: ./bin/conv '$b' < '$a'"
+	if diff -u <(cat "$a" | ./bin/conv "$b") "$c"; then
+		echo "ok: $b"
+	else	echo "fail: $b ; run: ./bin/conv '$b' < '$a'"
+	fi
+}
+test_conv_value() {
+	local va="$1";shift
+	local vb="$1";shift
+	if diff -u <(printf %s "$va" | ./bin/conv "$1") <(printf %s "$vb"); then
+		echo "ok: $1"
+	else	echo "fail: $1 ; run: ./bin/conv '$1' < '$va'"
+	fi
 }
 test_conv "$csv" csv/json_array/tsv "$tsv"
 test_conv "$tsv" tsv/json_array/csv "$csv"
@@ -61,6 +72,9 @@ test_conv "samples/sample.sendmail_aliases" sendmail_aliases/sendmail_aliases_js
 test_conv "$sendmail_aliases_json" sendmail_aliases'(v1)'/sendmail_aliases_json "$sendmail_aliases.v1"
 test_conv "$sendmail_aliases_json" sendmail_aliases'(v3)'/sendmail_aliases_json "$sendmail_aliases.v3"
 test_conv "$sendmail_aliases_json" sendmail_aliases/sendmail_aliases_json "$sendmail_aliases"
+
+test_conv_value 5AF3107A3FFF 5af3107a3fff hex/base64/hex
+test_conv_value 5AF3107A3FFF 5af3107a3fff hex/base64url/hex
 
 exit
 
